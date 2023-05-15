@@ -1,0 +1,51 @@
+---
+title: "Lacrosse Data Module"
+author: "Jack Cowan"
+output: pdf_document
+---
+
+1. Use the code to load in game by game statistics for the 2021 PLL season and the 2021-2022 NLL season.
+```{r}
+PLL_data = read.csv("./Data/PLL_data.csv")
+NLL_data = read.csv("./Data/NLL_data.csv")
+```
+
+2. Using the provided data, find the average goals per game and shots per game for both the NLL and PLL.
+
+
+
+3. Find the standard deviation of goals per game and shots per game for both the NLL and PLL
+
+
+
+4. Perform a t-test to determine if the mean goals per game is the same for both leagues. Interpret this p-value in context.
+
+
+
+5. Perform a t-test to determine if the mean shots per game is the same for both leagues. Interpret this p-value in context
+
+
+
+Consider the fact that PLL games are only 48 minutes long, while NLL games are 60 minutes long. What would happen if we scaled down NLL statistics to also be on per 48-minute rate.
+
+
+
+6. Find the average goals per 48 minutes and shots per 48 minutes for both the NLL and PLL.
+
+
+
+7. Find the standard deviation of goals per 48 minutes and shots per 48 minutes for both the NLL and PLL.
+
+
+
+8. Perform a t-test to determine if the mean goals per 48 minutes is the same for both leagues, interpret the p-value in context.
+
+
+
+9. Perform a t-test to determine if the mean shots per 48 minutes is the same for both leagues, interpret the p-value in context.
+
+
+
+10. Consider your answers to questions 4 and 5 and your answers to questions 8 and 9. Which pair of t-tests are the better choice for analyzing the difference between the leagues?
+
+

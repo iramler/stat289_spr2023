@@ -1,0 +1,122 @@
+---
+title: "Module"
+author: "George Charalambous"
+date: "4/9/2023"
+output:
+  word_document: default
+  html_document: default
+---
++ label tables 
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+League of Legends is a multiplayer online battle arena (MOBA) game developed by Riot Games. In the game, players assume the role of a "champion" with unique abilities and battle against a team of other players or computer-controlled champions. The objective is to destroy the enemy team's "Nexus," a structure located in their base. Along the way, players must defeat minions, jungle monsters, and enemy champions to gain gold and experience points, which can be used to purchase items and improve their champion's abilities. 
+
+Riot games continually collects data to evaluate the effect of every champion, adjusting and fine-tuning various aspects associated with each champion, to ensure fair and competitive game play. Through various updates(patches) of the game that occur every two weeks, characters might turn out to be either extremely efficient and strong, or they might be in need of adjustments to increase their abilities, as they are on the weaker side. Therefore, in order for an overall game balance to be achieved, developers use two common strategies, known as "nerfing" and "buffing" within the world of video games. "Nerfing" is the act of reducing the power or effectiveness of a champion or item in a video game, while "buffing" is the act of increasing its power or effectiveness.
+
+This module uses data from the 12.22 "patch" (version) of the game, within the 5v5 (5 champions vs 5 champions)summoners rift game mode, to identify if there is a relationship between the win rates associated for every champion. This game mode works like a common 5v5 basketball game. Two teams fight each other, with each player in a team having a different role, and use different strategies in order to destroy the enemy team's Nexus, which is the central structure located in their base. 
+
+A. Indicate the cases of the data set. 
+
+```{r}
+# lol <- read_csv("data/LOL Data .csv", skip = 3) %>%
+#   mutate(WRate = parse_number(`Win %`),
+#          PickRate = parse_number(`Pick %`), 
+#          RolePerc = parse_number(`Role %`), 
+#          BanPerc = parse_number(`Ban %`), 
+#          Name = stringr::str_sub(Name, 1, nchar(Name)/2)
+#          )%>%
+#   group_by(Name)%>%
+#   slice_max(RolePerc, n=1)%>%
+#   ungroup() |>
+#   select("Name", "Role", "KDA", "WRate", "PickRate", "RolePerc", "BanPerc")
+# 
+# lol22.22<- read_csv("data/12.22 dataset.csv") %>%
+#   mutate(WRate = parse_number(`Win %`), 
+#          PickRate = parse_number(`Pick %`), 
+#          RolePerc = parse_number(`Role %`),
+#          BanPerc = parse_number(`Ban %`),
+#          Name = stringr::str_sub(Name, 1, nchar(Name)/2)) %>%
+#   group_by(Name)%>%
+#   slice_max(RolePerc, n=1)%>%
+#   ungroup()|>
+#   select("Name", "Role", "KDA", "WRate", "PickRate", "RolePerc", "BanPerc")
+```
+
+```{r}
+# write_csv(lol, file = "data/LOL_patch_12.23.csv")
+# write_csv(lol22.22, file = "data/LOL_patch_12.22.csv")
+```
+
+```{r}
+lol = read_csv("data/LOL_patch_12.23.csv")
+lol22.22 = read_csv("data/LOL_patch_12.22.csv")
+```
+
+B. Within a few sentences, describe the distribution of the Win Rates, given the histogram below. 
+
+```{r}
+ggplot(data = lol22.22, mapping = aes(x = WRate))+
+  geom_histogram()+
+  labs(x = "12.22 Win Rates")
+```
+
+C. Here is the five number summary, mean and standard deviation of the Win Rates. Additionally here is a table of the five highest and five lowest Win Rates. Use this information to determine if there are any outliers in the 12.22 patch. 
+```{r}
+summary(lol22.22$WRate)
+sd(lol22.22$WRate)
+```
+
+```{r}
+top5 <- lol22.22 |>
+  slice_max(WRate, n = 5)
+
+bottom5 <- lol22.22 |>
+  slice_min(WRate, n = 5)
+
+list22 <- bind_rows(top5, bottom5) |>
+  select(Name,WRate) |>
+  arrange(desc(WRate))
+list22
+```
+
+D. Based on your calculations, if you were part of the developer team, which changes, if any, would you suggest to champions for game balance. As part of your rationale, you should use terms such as "nerfing" or "buffing".
+
+
+Previously we used data from the game's 12.22 patch (version). Now, we will consider data for the 12.23 patch. Below is the histogram, the five-number summary, mean, and the standard deviation of the Win Rates of the champions in the 12.23 patch. 
+
+E. Using the summaries below, which champions seem to be outliers?
+
+```{r}
+ggplot(data = lol, mapping = aes(x = WRate))+
+  geom_histogram()+
+  labs(x = "12.23 Win Rates")
+```
+
+```{r}
+lol23.temp <- lol |>
+  select(Name, WRate) |>
+  rename(WRate_12.23 = WRate)
+
+left_join(list22, lol23.temp, by="Name")|>
+  rename(WRate_12.22 = WRate)
+```
+
+```{r}
+summary(lol23.temp$WRate_12.23)
+sd(lol23.temp$WRate_12.23)
+```
+
+F. Suppose that the company took your suggestion from the previous analysis. Did the "nerf" or "buff" that you suggested work by ensuring that the champion(s) win rates were in line with the rest of the champions? Briefly explain using the data from pervious exercises to support your rationale.
+
+
+
+G. Based on the data you have available, do you have any new game balance suggestions to apply when the next patch comes out?
+
+
+
+
+
